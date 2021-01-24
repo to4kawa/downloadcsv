@@ -1,8 +1,14 @@
 import re, datetime
 import urllib.request
+import boto3
+
+print('Loading function')      # ②Functionのロードをログに出力
+ 
+s3 = boto3.resource('s3') 
 
 def main(event, context):
 
+    
     # 仙台市中央市場　野菜果実のデータ
     url='http://kei008220.webcrow.jp/seika.csv'
 
@@ -62,5 +68,11 @@ def main(event, context):
     # 余計な「,」等を削除
     csvfile=csvfile.replace(',\r\n,','\r\n').replace('－     ','－').replace(',\r\n','')
 
-    return csvfile
+    #S3書き込み
+    bucket = 'sendaimarket'
+    key = 'seika_'+date+'.csv'
+    file_contents = csvfile
     
+    obj = s3.Object(bucket,key)
+    obj.put(Body=file_contents)
+    return 
