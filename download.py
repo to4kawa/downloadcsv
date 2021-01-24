@@ -41,14 +41,9 @@ date=datetime.datetime.strftime(date_tmp,"%Y-%m-%d")
 
 #　野菜と果物のテーブル　
 # searchで文字列を検索して行番号を出している。
-vegitable_row=''
-furit_row=''
-for i,v in [[i,re.search('野菜',v[0])]  for i,v in enumerate(l)]:
-    if v:
-        vegitable_row=i
-for i,v in [[i,re.search('果実',v[0])]  for i,v in enumerate(l)]:
-    if v:
-        fruit_row=i
+vegitable_row=min(i  for i,v in enumerate(l) if re.search('野菜',v[0]) is not None )
+fruit_row=min(i  for i,v in enumerate(l) if re.search('果実',v[0]) is not None )
+
 vegitable_lst=[]
 # スライスの仕方は確認したらこれで大丈夫だった。
 for i in range(vegitable_row+2,fruit_row):
